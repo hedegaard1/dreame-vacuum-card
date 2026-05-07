@@ -1,6 +1,6 @@
 # Dreame Vacuum Card
 
-A mobile-friendly Lovelace card for the [dreame_vacuum](https://github.com/Tasshack/dreame-vacuum) Home Assistant integration. Designed for the Dreame X40 Ultra but works with any Dreame robot vacuum the integration supports.
+A polished Lovelace card for the [dreame_vacuum](https://github.com/Tasshack/dreame-vacuum) Home Assistant integration — fully responsive, looks great on both desktop dashboards and mobile views. Designed for the Dreame X40 Ultra but works with any Dreame robot vacuum the integration supports.
 
 > **Status:** v1.0.0 — initial public release.
 > The card auto-discovers all related select / number / switch / sensor / time / button entities from the entity prefix, so no extra wiring is required beyond enabling the entities you want.

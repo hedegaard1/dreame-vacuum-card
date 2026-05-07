@@ -4176,7 +4176,7 @@ window.customCards = window.customCards || [];
 window.customCards.push({
   type: "dreame-vacuum-card",
   name: "Dreame Vacuum Card",
-  description: "Mobile-friendly Lovelace card for the Dreame Vacuum Home Assistant integration.",
+  description: "Responsive Lovelace card for the Dreame Vacuum Home Assistant integration — works on desktop and mobile.",
   preview: true,
   documentationURL: "https://github.com/hedegaard1/dreame-vacuum-card",
 });
