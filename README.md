@@ -5,7 +5,7 @@ A polished Lovelace card for the [dreame_vacuum](https://github.com/Tasshack/dre
 > **Status:** v1.0.0 — initial public release.
 > The card auto-discovers all related select / number / switch / sensor / time / button entities from the entity prefix, so no extra wiring is required beyond enabling the entities you want.
 
-![Dreame Vacuum Card — main view](images/main.png)
+![Dreame Vacuum Card — main view](https://raw.githubusercontent.com/hedegaard1/dreame-vacuum-card/main/images/main.png)
 
 ---
 
@@ -23,7 +23,7 @@ A polished Lovelace card for the [dreame_vacuum](https://github.com/Tasshack/dre
 
 While a job runs, the room grid is replaced with a focused overlay that shows the present location, the room being cleaned, and quick actions for **Pause/Resume**, **Self-clean**, and **End job**. The robot image rotates slowly and pulses with the accent color so you can tell at a glance the job is alive.
 
-![Cleaning overlay](images/cleaning-active.png)
+![Cleaning overlay](https://raw.githubusercontent.com/hedegaard1/dreame-vacuum-card/main/images/cleaning-active.png)
 
 The overlay survives mid-job dock visits (mop wash, drying) so it doesn't flash off while the robot is briefly stationary. It auto-closes when Dreame reports the task as `completed`.
 
@@ -32,7 +32,7 @@ The overlay survives mid-job dock visits (mop wash, drying) so it doesn't flash 
 
 Whenever the integration reports an issue (cleanup route blocked, low water, dirty water tank full, missing mop pad, brush due for replacement, sensors that need cleaning, dust bag full, etc.) a white card with a red warning triangle appears between the hero and the rooms grid. The banner shows the most important warning by name and indicates how many additional issues are queued (e.g. "+2 more"). It disappears completely when there's nothing to flag — no permanent empty box wasting space.
 
-![Alert banner — Cleanup route blocked](images/alert-banner.png)
+![Alert banner — Cleanup route blocked](https://raw.githubusercontent.com/hedegaard1/dreame-vacuum-card/main/images/alert-banner.png)
 
 The status pill on the right of the hero also flips to "Error" with a sub-label describing what the robot is currently doing about it (e.g. "Returning to dock"), so you get the cause + the consequence in one glance.
 
@@ -47,31 +47,31 @@ The **Cleaning** tab uses a slide-toggle between **CleanGenius** (smart auto) an
 
 When the robot is doing both, you see suction power, mop humidity, mop washing schedule, and route together — everything that matters for combined jobs.
 
-![Custom — Sweeping and mopping mode](images/custom-sweep-mop.png)
+![Custom — Sweeping and mopping mode](https://raw.githubusercontent.com/hedegaard1/dreame-vacuum-card/main/images/custom-sweep-mop.png)
 
 ### Sweeping only
 
 Mop-related sections (humidity, washing) hide automatically because they don't apply to a vacuum-only job.
 
-![Custom — Sweep mode](images/custom-sweep.png)
+![Custom — Sweep mode](https://raw.githubusercontent.com/hedegaard1/dreame-vacuum-card/main/images/custom-sweep.png)
 
 ### Mopping only
 
 Suction Power hides since the robot won't be vacuuming. Mop-specific controls take center stage.
 
-![Custom — Mop mode](images/custom-mop.png)
+![Custom — Mop mode](https://raw.githubusercontent.com/hedegaard1/dreame-vacuum-card/main/images/custom-mop.png)
 
 ### Mopping after Sweeping
 
 Both flows in sequence — same full controls as Sweep+Mop, plus the four-option Route selector at the bottom.
 
-![Custom — Mop after Sweep mode](images/custom-mop-after-sweep.png)
+![Custom — Mop after Sweep mode](https://raw.githubusercontent.com/hedegaard1/dreame-vacuum-card/main/images/custom-mop-after-sweep.png)
 
 ### Customized (per-room)
 
 Toggle **Customized cleaning** on and the global controls are replaced with a collapsible per-room view. Each room gets its own cleaning times, suction level and wetness level slider — independent of the global settings. Closed rooms show their current settings as a one-line preview ("1x · standard · 💧16") so you can scan the whole house without opening every accordion.
 
-![Custom — Per-room view](images/custom-per-room.png)
+![Custom — Per-room view](https://raw.githubusercontent.com/hedegaard1/dreame-vacuum-card/main/images/custom-per-room.png)
 
 ---
 
@@ -79,7 +79,7 @@ Toggle **Customized cleaning** on and the global controls are replaced with a co
 
 Settings that affect *how* the robot behaves on the floor and at the dock.
 
-![Behavior tab](images/behavior.png)
+![Behavior tab](https://raw.githubusercontent.com/hedegaard1/dreame-vacuum-card/main/images/behavior.png)
 
 - **Schedule & Audio** — DnD toggle, with start/end time pickers that appear only when DnD is on, plus a volume slider.
 - **Preferences** — Resume after pause (continue cleaning after a power blip), Child lock (disable physical buttons on the dock).
@@ -93,7 +93,7 @@ Each toggle, slider and section is independent: if you only have, say, the carpe
 
 Settings and quick actions for the dock itself.
 
-![Dock tab](images/dock.png)
+![Dock tab](https://raw.githubusercontent.com/hedegaard1/dreame-vacuum-card/main/images/dock.png)
 
 - **Auto Empty** — toggle the dock's automatic dust collection plus a frequency picker (Smart / Auto / Always / etc.) that only shows when auto-empty is on.
 - **Mop Care** — Detergent dosing (the dock automatically blends floor cleaner into the mop water — only useful if you have the detergent cartridge installed), and a drying time slider.
