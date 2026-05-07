@@ -1,0 +1,16 @@
+# Token / credential staging — never commit
+.github-token
+*-token.txt
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Editor scratch
+.vscode/
+.idea/
+*.swp
+
+# Build output (we ship the .js as source; no build step)
+dist/
+node_modules/
