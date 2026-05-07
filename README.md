@@ -128,11 +128,11 @@ The card never throws "entity not found" errors. Instead, every section is rende
 
 ### Via HACS (recommended)
 
-1. In Home Assistant, open **HACS → Frontend**.
+1. In Home Assistant, open **HACS**.
 2. Click the three-dot menu in the top right → **Custom repositories**.
 3. Add this repository:
    - **Repository:** `https://github.com/hedegaard1/dreame-vacuum-card`
-   - **Type:** `Lovelace`
+   - **Type:** `Dashboard`
 4. Find **Dreame Vacuum Card** in HACS, click *Download*, and select the latest version.
 5. Refresh your browser (hard refresh: Ctrl+F5 or Cmd+Shift+R) so HA picks up the new resource.
 
