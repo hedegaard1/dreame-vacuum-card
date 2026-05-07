@@ -2,6 +2,8 @@
 
 A polished, fully responsive Lovelace card for the [dreame_vacuum](https://github.com/Tasshack/dreame-vacuum) Home Assistant integration. Designed for the Dreame X40 Ultra but works with any Dreame robot vacuum the integration supports.
 
+> **Requires** the [dreame_vacuum integration](https://github.com/Tasshack/dreame-vacuum) by @Tasshack. Install it via HACS first — without it, this card has nothing to display.
+
 ## Highlights
 
 - One-tap **Clean all rooms** or pick specific rooms to clean

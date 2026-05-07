@@ -9,6 +9,24 @@ A polished Lovelace card for the [dreame_vacuum](https://github.com/Tasshack/dre
 
 ---
 
+## ⚠️ Prerequisite: the dreame_vacuum integration
+
+**This card is a frontend for the [dreame_vacuum integration](https://github.com/Tasshack/dreame-vacuum) by [@Tasshack](https://github.com/Tasshack) — install that integration first, otherwise the card has nothing to display.**
+
+The card itself contains no logic for talking to the robot; it reads from and writes to the entities the integration creates (vacuum, sensors, selects, switches, numbers, times, buttons). Without the integration set up and connected to your Dreame robot, the card will just show "Entity not found".
+
+**Install the integration via HACS:**
+
+1. In HACS, click the three-dot menu → **Custom repositories**.
+2. Add `https://github.com/Tasshack/dreame-vacuum` with type **Integration**.
+3. Find **Dreame Vacuum** in HACS, download it, and restart Home Assistant.
+4. **Settings → Devices & Services → Add Integration → Dreame Vacuum** and follow the prompts (Mi Home / Dreamehome account, or local connection).
+5. Once your robot shows up as `vacuum.<your_robot_name>` in HA, you're ready to add this card.
+
+> The integration also ships a long list of *disabled* entities (per-room cycles, suction, wetness, DnD timers, …). Open **Settings → Devices & Services → Dreame Vacuum → click your robot → "+x disabled entities"** and enable the ones this card needs (see the [Recommended Dreame entities](#recommended-dreame-entities) section further down).
+
+---
+
 ## Why this card
 
 - **Drop-in replacement** for the default Lovelace vacuum card with a layout tuned for everyday use: pick rooms or send the robot home with one tap, see status / battery / area / time at a glance.
