@@ -3,30 +3,124 @@
 A mobile-friendly Lovelace card for the [dreame_vacuum](https://github.com/Tasshack/dreame-vacuum) Home Assistant integration. Designed for the Dreame X40 Ultra but works with any Dreame robot vacuum the integration supports.
 
 > **Status:** v1.0.0 — initial public release.
-> Built around the Dreame Vacuum integration; the card auto-discovers all related select / number / switch / sensor / time / button entities from the entity prefix, so no extra wiring is required.
+> The card auto-discovers all related select / number / switch / sensor / time / button entities from the entity prefix, so no extra wiring is required beyond enabling the entities you want.
+
+![Dreame Vacuum Card — main view](images/main.png)
 
 ---
 
-## Features
+## Why this card
 
-### Main card
-- **One-tap actions** — *Clean all rooms* by default, *Clean selected room(s)* the moment you pick rooms, *Clear all selection(s)*.
-- **Per-room buttons** sorted by your Dreame *Order* selects (`select.<prefix>_room_<id>_order`), laid out top-to-bottom column-major to match the Dreame app.
-- **Live cleaning overlay** while the robot is active: present location, room being cleaned, pause/resume, self-clean, end-job — with a slow rotation + accent-colored pulse on the robot image.
-- **Alert banner** (white card + red warning triangle) for any active warnings: low water, dirty water full, mop pad missing, brush due for replacement, sensor cleaning, dust bag full, etc.
-- **Battery / area / time / mode** summary tiles with progress rings.
+- **Drop-in replacement** for the default Lovelace vacuum card with a layout tuned for everyday use: pick rooms or send the robot home with one tap, see status / battery / area / time at a glance.
+- **All the controls in one place** — three tabs cover cleaning behaviour (auto vs. manual), robot preferences (DnD, volume, child lock, carpets) and dock care (auto-empty, drying, detergent dosing).
+- **Dreame-app-style sliders** for granular controls: 1–32 wetness level, 1x/2x/3x cleaning cycles, etc.
+- **Theme-aware** — picks up your HA theme's accent and surface colors automatically. Looks like part of your dashboard, not a sticker on top.
+- **Respects what's enabled in HA** — sections and rows simply don't render when their underlying entity is disabled in the Dreame integration. No empty boxes, no broken UI, no extra config.
 
-### Advanced settings — three tabs
-- **Cleaning** — CleanGenius ↔ Custom slide-toggle, cleaning mode, cleaning times (1x / 2x / 3x), suction power + Max+, mop humidity (slider over `wetness_level` 1–32 with *Lightly damp / Damp / Wet* labels — falls back to the legacy `mop_pad_humidity` circles), mop washing, route, per-room settings when *Customized cleaning* is enabled.
-- **Behavior** — DnD with start/end times when active, volume, resume after pause, child lock, carpet boost, carpet avoidance, auto-mount mop.
-- **Dock** — Auto empty + frequency pills, detergent dosing, drying time, *Clean dock* quick action.
+---
 
-### Theme & language
-- **Theme-aware colors** — follows your HA theme variables (`--primary-color`, `--primary-text-color`, `--card-background-color`, `--primary-background-color`, `--divider-color`). The card adopts your accent color automatically.
-- **Localized UI** — English (default) and Danish are fully translated. Stubs are ready for: `ca`, `cs`, `de`, `el`, `es`, `fr`, `hu`, `it`, `ko`, `nl`, `pl`, `pt`, `ro`, `ru`, `sl`, `sv`, `uk`, `zh`. PRs welcome.
+## Live cleaning overlay
 
-### Defensive
-- Sections hide automatically when their underlying entities aren't enabled in Home Assistant — no broken UI, no missing-entity errors. Open the Dreame Vacuum integration's "+x disabled entities" to enable any feature you want to surface.
+While a job runs, the room grid is replaced with a focused overlay that shows the present location, the room being cleaned, and quick actions for **Pause/Resume**, **Self-clean**, and **End job**. The robot image rotates slowly and pulses with the accent color so you can tell at a glance the job is alive.
+
+![Cleaning overlay](images/cleaning-active.png)
+
+The overlay survives mid-job dock visits (mop wash, drying) so it doesn't flash off while the robot is briefly stationary. It auto-closes when Dreame reports the task as `completed`.
+
+
+## Alert banner — surfaces problems immediately
+
+Whenever the integration reports an issue (cleanup route blocked, low water, dirty water tank full, missing mop pad, brush due for replacement, sensors that need cleaning, dust bag full, etc.) a white card with a red warning triangle appears between the hero and the rooms grid. The banner shows the most important warning by name and indicates how many additional issues are queued (e.g. "+2 more"). It disappears completely when there's nothing to flag — no permanent empty box wasting space.
+
+![Alert banner — Cleanup route blocked](images/alert-banner.png)
+
+The status pill on the right of the hero also flips to "Error" with a sub-label describing what the robot is currently doing about it (e.g. "Returning to dock"), so you get the cause + the consequence in one glance.
+
+
+---
+
+## Cleaning settings — three context-aware variations
+
+The **Cleaning** tab uses a slide-toggle between **CleanGenius** (smart auto) and **Custom** (manual). When in Custom, the visible controls adapt to the cleaning mode you pick — only options that affect the active job show up. This keeps the menu short and focused on what actually changes the result.
+
+### Sweeping + Mopping (full set)
+
+When the robot is doing both, you see suction power, mop humidity, mop washing schedule, and route together — everything that matters for combined jobs.
+
+![Custom — Sweeping and mopping mode](images/custom-sweep-mop.png)
+
+### Sweeping only
+
+Mop-related sections (humidity, washing) hide automatically because they don't apply to a vacuum-only job.
+
+![Custom — Sweep mode](images/custom-sweep.png)
+
+### Mopping only
+
+Suction Power hides since the robot won't be vacuuming. Mop-specific controls take center stage.
+
+![Custom — Mop mode](images/custom-mop.png)
+
+### Mopping after Sweeping
+
+Both flows in sequence — same full controls as Sweep+Mop, plus the four-option Route selector at the bottom.
+
+![Custom — Mop after Sweep mode](images/custom-mop-after-sweep.png)
+
+### Customized (per-room)
+
+Toggle **Customized cleaning** on and the global controls are replaced with a collapsible per-room view. Each room gets its own cleaning times, suction level and wetness level slider — independent of the global settings. Closed rooms show their current settings as a one-line preview ("1x · standard · 💧16") so you can scan the whole house without opening every accordion.
+
+![Custom — Per-room view](images/custom-per-room.png)
+
+---
+
+## Behavior tab — robot preferences
+
+Settings that affect *how* the robot behaves on the floor and at the dock.
+
+![Behavior tab](images/behavior.png)
+
+- **Schedule & Audio** — DnD toggle, with start/end time pickers that appear only when DnD is on, plus a volume slider.
+- **Preferences** — Resume after pause (continue cleaning after a power blip), Child lock (disable physical buttons on the dock).
+- **Carpets** — Carpet boost (extra suction on carpets), Carpet avoidance (skip carpeted areas during mop jobs), Auto-mount mop (robot fits / removes the mop pad on its own).
+
+Each toggle, slider and section is independent: if you only have, say, the carpet entities enabled in HA, the *Schedule & Audio* and *Preferences* sections simply don't appear.
+
+---
+
+## Dock tab — base-station care
+
+Settings and quick actions for the dock itself.
+
+![Dock tab](images/dock.png)
+
+- **Auto Empty** — toggle the dock's automatic dust collection plus a frequency picker (Smart / Auto / Always / etc.) that only shows when auto-empty is on.
+- **Mop Care** — Detergent dosing (the dock automatically blends floor cleaner into the mop water — only useful if you have the detergent cartridge installed), and a drying time slider.
+- **Quick Actions** — One-tap buttons that fire HA `button.press` services. Currently shipping with **Clean dock** (`button.<prefix>_base_station_cleaning`) — runs the dock's self-cleaning cycle on demand.
+
+More quick actions can be added in future versions (manual mop wash, drain dirty water, manual mop drying, etc.) — the entities already exist in the integration; we just haven't surfaced them as buttons yet.
+
+---
+
+## What hides automatically (graceful fallback)
+
+The card never throws "entity not found" errors. Instead, every section is rendered conditionally based on what's actually enabled in your Home Assistant. Concretely:
+
+- **Per-room sliders / pills** show "entity not enabled" muted text or skip the section when their per-room entity isn't enabled.
+- **Sub-toggles** like Max+, Resume after pause, Child lock, Carpet boost, Carpet avoidance, Auto-mount mop, Auto-empty, Detergent — each appears only when its switch entity exists. A whole section (e.g. *Carpets*) hides if none of its three toggles are enabled.
+- **DnD time pickers** appear only when (a) DnD is currently turned on AND (b) at least one of `time.<prefix>_dnd_start` / `time.<prefix>_dnd_end` is enabled.
+- **Volume slider** hides if `number.<prefix>_volume` isn't enabled.
+- **Drying time slider** hides if `number.<prefix>_drying_time` isn't enabled.
+- **Mop Humidity** prefers the granular `wetness_level` slider (1–32 with *Lightly damp / Damp / Wet* labels). If only the legacy `mop_pad_humidity` select is enabled, it falls back to a 4-circle preset row. If neither is available, the whole section is omitted.
+- **Cleaning Times pills** (1x / 2x / 3x) show only when *Customized cleaning* is OFF (because per-room overrides handle this when ON).
+- **Mop Washing area / time slider** appears only when the corresponding self-clean frequency mode is selected (By Area shows the m² slider; By Time shows the minutes slider).
+- **Suction Power** stays visible whenever the suction list OR the Max+ toggle exist — so you can never get stuck with Max+ on and no way to turn it back off.
+- **Cleaning Modes** that don't apply (e.g. mop options when in Sweep mode) are hidden — see the four mode-specific screenshots above.
+- **Cleaning overlay** only appears while the robot is actively cleaning (or during a mid-job dock visit). It auto-closes when Dreame reports the task as `completed`.
+- **Alert banner** only renders when there is at least one active warning (low water, dirty water full, mop pad missing, brush due for replacement, sensor cleaning, dust bag full, …).
+- **Image** in the hero defaults to a `mdi:robot-vacuum` icon if you don't set `image:` in the YAML.
+- **Title** falls back to the entity's `friendly_name` if you don't set `title:`.
 
 ---
 
@@ -71,36 +165,35 @@ title: Dreame X40 Ultra                # optional — header title (defaults to 
 image: /local/DreameX40Ultra.png       # optional — path to a robot image (falls back to mdi:robot-vacuum icon)
 ```
 
-> The card auto-discovers everything else (suction level, mop humidity, CleanGenius mode, DnD, room settings, …) from the entity prefix. No extra wiring required.
+> The card auto-discovers everything else (suction level, mop humidity, CleanGenius, DnD, room settings, …) from the entity prefix. No extra wiring required.
 
 ---
 
-## Required / recommended Dreame entities
+## Recommended Dreame entities
 
-The card hides any section whose entity is disabled in HA. To get the full experience, enable these in **Settings → Devices & Services → Dreame Vacuum → click your robot → "+x disabled entities"**:
+The card hides any section whose entity is disabled. To unlock the full feature set, enable these in **Settings → Devices & Services → Dreame Vacuum → click your robot → "+x disabled entities"**:
 
-**Per-room (one set per room):**
-- `select.<prefix>_room_<id>_order` — used for room ordering on the front page
-- `select.<prefix>_room_<id>_cleaning_times`, `select.<prefix>_room_<id>_suction_level`, `number.<prefix>_room_<id>_wetness_level` — used in the per-room accordion when Customized cleaning is on
+**Per-room (one set per room id):**
+- `select.<prefix>_room_<id>_order` — used to sort the room grid
+- `select.<prefix>_room_<id>_cleaning_times`
+- `select.<prefix>_room_<id>_suction_level`
+- `number.<prefix>_room_<id>_wetness_level`
 
-**Global:**
-- `switch.<prefix>_customized_cleaning` — toggle per-room overrides
-- `switch.<prefix>_max_suction_power` — Max+ toggle
+**Global behaviour:**
 - `switch.<prefix>_dnd` + `time.<prefix>_dnd_start` + `time.<prefix>_dnd_end`
-- `number.<prefix>_volume`, `number.<prefix>_drying_time`, `number.<prefix>_wetness_level`
-- `switch.<prefix>_resume_cleaning`, `switch.<prefix>_child_lock`, `switch.<prefix>_carpet_boost`, `switch.<prefix>_carpet_avoidance`, `switch.<prefix>_auto_mount_mop`
-- `switch.<prefix>_auto_dust_collecting`, `select.<prefix>_auto_empty_frequency`, `switch.<prefix>_auto_add_detergent`
-- `button.<prefix>_base_station_cleaning`, `button.<prefix>_self_clean`, `button.<prefix>_water_tank_draining`
+- `number.<prefix>_volume`
+- `switch.<prefix>_resume_cleaning`, `switch.<prefix>_child_lock`
+- `switch.<prefix>_carpet_boost`, `switch.<prefix>_carpet_avoidance`, `switch.<prefix>_auto_mount_mop`
 
----
+**Cleaning controls:**
+- `switch.<prefix>_customized_cleaning` (toggle per-room overrides)
+- `switch.<prefix>_max_suction_power` (Max+)
+- `number.<prefix>_wetness_level` (the slider — falls back to `mop_pad_humidity` circles if missing)
 
-## Screenshots
-
-> Add screenshots under `images/` and update the paths below.
-
-![Dreame Vacuum Card — main view](images/card-preview.png)
-![Advanced settings — Cleaning tab](images/advanced-cleaning.png)
-![Advanced settings — Dock tab](images/advanced-dock.png)
+**Dock:**
+- `switch.<prefix>_auto_dust_collecting`, `select.<prefix>_auto_empty_frequency`
+- `switch.<prefix>_auto_add_detergent`, `number.<prefix>_drying_time`
+- `button.<prefix>_base_station_cleaning`
 
 ---
 
