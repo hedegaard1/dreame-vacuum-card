@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.2] — HACS persistence fix attempt
+
+### Changed
+- `hacs.json` now declares a minimum Home Assistant version (`2024.1.0`) and matches the field set used by other established Lovelace cards (button-card, layout-card, windy-card). HACS' validator may treat the missing field as a reason to drop the repo on restart in some versions; adding it is harmless and matches the docs.
+
 ## [1.0.1] — Documentation & polish
 
 ### Added

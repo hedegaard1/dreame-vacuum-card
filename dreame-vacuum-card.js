@@ -7,7 +7,7 @@
  * Repository : https://github.com/hedegaard1/dreame-vacuum-card
  * Author     : Martin Fiil
  * License    : MIT
- * Version    : 1.0.1
+ * Version    : 1.0.2
  *
  * Configuration example (Lovelace YAML):
  *
