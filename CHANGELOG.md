@@ -5,10 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.3] — Replace remaining "Lovelace" wording with "Dashboard"
+
+### Changed
+- README, info.md, JS file header, customCards description, GitHub repo description and CHANGELOG entries all now say "Dashboard card" instead of "Lovelace card", matching Home Assistant's current terminology.
+- The single historical CHANGELOG line explaining the HACS dropdown rename ("was `Lovelace`") is intentionally preserved.
+
 ## [1.0.2] — HACS persistence fix attempt
 
 ### Changed
-- `hacs.json` now declares a minimum Home Assistant version (`2024.1.0`) and matches the field set used by other established Lovelace cards (button-card, layout-card, windy-card). HACS' validator may treat the missing field as a reason to drop the repo on restart in some versions; adding it is harmless and matches the docs.
+- `hacs.json` now declares a minimum Home Assistant version (`2024.1.0`) and matches the field set used by other established Dashboard cards (button-card, layout-card, windy-card). HACS' validator may treat the missing field as a reason to drop the repo on restart in some versions; adding it is harmless and matches the docs.
 
 ## [1.0.1] — Documentation & polish
 
@@ -20,14 +26,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - "What hides automatically" section explaining the card's defensive entity discovery.
 
 ### Changed
-- Reworded as "responsive Lovelace card" / "works on desktop and mobile" instead of just "mobile-friendly".
+- Reworded as "responsive Dashboard card" / "works on desktop and mobile" instead of just "mobile-friendly".
 - HACS install instructions now use the current type label `Dashboard` (was `Lovelace` — HACS renamed the dropdown a while back).
 - README screenshots use absolute `raw.githubusercontent.com` URLs so they render correctly inside HACS, not only on the GitHub project page.
 
 ## [1.0.0] — Initial public release
 
 ### Added
-- Mobile-friendly Lovelace card for the Dreame Vacuum Home Assistant integration.
+- Mobile-friendly Dashboard card for the Dreame Vacuum Home Assistant integration.
 - Three-tab Advanced settings menu: Cleaning (CleanGenius / Custom slide-toggle), Behavior, Dock.
 - Per-room cleaning settings (cycles, suction, wetness) when Customized cleaning is enabled.
 - Global Cleaning times pills (1x / 2x / 3x) passed as `repeats` to the clean service.

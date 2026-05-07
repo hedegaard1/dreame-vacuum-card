@@ -1,15 +1,15 @@
 /**
  * Dreame Vacuum Card
- * A custom Lovelace card for Home Assistant — built around the official
+ * A custom Dashboard card for Home Assistant — built around the official
  * dreame_vacuum integration. Designed for the Dreame X40 Ultra but works
  * with any Dreame robot vacuum that the integration supports.
  *
  * Repository : https://github.com/hedegaard1/dreame-vacuum-card
  * Author     : Martin Fiil
  * License    : MIT
- * Version    : 1.0.2
+ * Version    : 1.0.3
  *
- * Configuration example (Lovelace YAML):
+ * Configuration example (dashboard YAML):
  *
  *   type: custom:dreame-vacuum-card
  *   entity: vacuum.dreame_x40_ultra      # required — your Dreame vacuum
@@ -4176,7 +4176,7 @@ window.customCards = window.customCards || [];
 window.customCards.push({
   type: "dreame-vacuum-card",
   name: "Dreame Vacuum Card",
-  description: "Responsive Lovelace card for the Dreame Vacuum Home Assistant integration — works on desktop and mobile.",
+  description: "Responsive Dashboard card for the Dreame Vacuum Home Assistant integration — works on desktop and mobile.",
   preview: true,
   documentationURL: "https://github.com/hedegaard1/dreame-vacuum-card",
 });

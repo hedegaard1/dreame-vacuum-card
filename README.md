@@ -1,6 +1,6 @@
 # Dreame Vacuum Card
 
-A polished Lovelace card for the [dreame_vacuum](https://github.com/Tasshack/dreame-vacuum) Home Assistant integration — fully responsive, looks great on both desktop dashboards and mobile views. Designed for the Dreame X40 Ultra but works with any Dreame robot vacuum the integration supports.
+A polished Dashboard card for the [dreame_vacuum](https://github.com/Tasshack/dreame-vacuum) Home Assistant integration — fully responsive, looks great on both desktop dashboards and mobile views. Designed for the Dreame X40 Ultra but works with any Dreame robot vacuum the integration supports.
 
 > **Status:** v1.0.0 — initial public release.
 > The card auto-discovers all related select / number / switch / sensor / time / button entities from the entity prefix, so no extra wiring is required beyond enabling the entities you want.
@@ -29,7 +29,7 @@ The card itself contains no logic for talking to the robot; it reads from and wr
 
 ## Why this card
 
-- **Drop-in replacement** for the default Lovelace vacuum card with a layout tuned for everyday use: pick rooms or send the robot home with one tap, see status / battery / area / time at a glance.
+- **Drop-in replacement** for the default vacuum card with a layout tuned for everyday use: pick rooms or send the robot home with one tap, see status / battery / area / time at a glance.
 - **All the controls in one place** — three tabs cover cleaning behaviour (auto vs. manual), robot preferences (DnD, volume, child lock, carpets) and dock care (auto-empty, drying, detergent dosing).
 - **Dreame-app-style sliders** for granular controls: 1–32 wetness level, 1x/2x/3x cleaning cycles, etc.
 - **Theme-aware** — picks up your HA theme's accent and surface colors automatically. Looks like part of your dashboard, not a sticker on top.
