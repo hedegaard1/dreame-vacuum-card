@@ -167,6 +167,35 @@ image: /local/DreameX40Ultra.png       # optional — path to a robot image (fal
 
 > The card auto-discovers everything else (suction level, mop humidity, CleanGenius, DnD, room settings, …) from the entity prefix. No extra wiring required.
 
+### Robot image
+
+A bundled top-down image of a Dreame robot vacuum is included at [`images/dreame-vacuum.png`](images/dreame-vacuum.png) — feel free to use it as-is.
+
+**To use the bundled image:**
+
+1. Download `images/dreame-vacuum.png` from this repo.
+2. Copy it to `/config/www/` on your Home Assistant host (creates the path `/local/dreame-vacuum.png` for use in YAML).
+3. Reference it in your card config:
+
+```yaml
+type: custom:dreame-vacuum-card
+entity: vacuum.dreame_x40_ultra
+image: /local/dreame-vacuum.png
+```
+
+**To use your own image:**
+
+The hero icon area is square (around 84 × 84 px on desktop, 56 × 56 px on mobile). For best results:
+
+- **Aspect ratio:** roughly **1:1 (square)**. Wider or taller images are letterboxed (`object-fit: contain`) so nothing gets cropped, but they look best square.
+- **Resolution:** at least **400 × 400 px** so the image stays crisp on high-DPI screens. The bundled image is 543 × 521 px.
+- **Background:** **transparent PNG** is recommended — the soft drop-shadow that the card applies works much better when the image cuts out cleanly from its background.
+- **Subject framing:** centered, with a small margin so the rotation animation (when the robot is active) doesn't clip the corners.
+
+If your image doesn't follow these guidelines the card will still render — but the drop-shadow may look odd on a hard-edged photo, and the slow-rotation animation may show empty rectangular corners spinning around.
+
+If you don't set `image:` at all, the hero falls back to a built-in `mdi:robot-vacuum` icon — also rotates and pulses with the accent color when the robot is active.
+
 ---
 
 ## Recommended Dreame entities
