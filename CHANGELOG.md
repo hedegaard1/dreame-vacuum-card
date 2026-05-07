@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] — Documentation & polish
+
+### Added
+- Bundled `images/dreame-vacuum.png` (top-down PNG with transparent background) so users have a sensible default robot image.
+- Detailed README with screenshots in every feature section (main view, live cleaning overlay, alert banner, four context-aware Custom-tab variations, per-room view, Behavior tab, Dock tab).
+- Prominent "Prerequisite" section explaining the dependency on Tasshack's [dreame_vacuum integration](https://github.com/Tasshack/dreame-vacuum) — without it the card has nothing to display.
+- New "Robot image" subsection in Configuration with sizing / aspect-ratio guidance for users who want to use their own image.
+- "What hides automatically" section explaining the card's defensive entity discovery.
+
+### Changed
+- Reworded as "responsive Lovelace card" / "works on desktop and mobile" instead of just "mobile-friendly".
+- HACS install instructions now use the current type label `Dashboard` (was `Lovelace` — HACS renamed the dropdown a while back).
+- README screenshots use absolute `raw.githubusercontent.com` URLs so they render correctly inside HACS, not only on the GitHub project page.
+
 ## [1.0.0] — Initial public release
 
 ### Added
