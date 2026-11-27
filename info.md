@@ -1,4 +1,4 @@
-# Dreame Vacuum Card
+# Dreame Vacuum Card HD
 
 A polished, fully responsive Dashboard card for the [dreame_vacuum](https://github.com/Tasshack/dreame-vacuum) Home Assistant integration. Designed for the Dreame X40 Ultra but works with any Dreame robot vacuum the integration supports.
 

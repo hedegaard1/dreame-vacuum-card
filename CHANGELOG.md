@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.6] — Display name: Dreame Vacuum Card HD
+
+### Changed
+- HACS and the dashboard card picker now show this card as **Dreame Vacuum Card HD**. That tells it apart from the card built into the dreame_vacuum integration, which is also called "Dreame Vacuum Card". The card type stays `custom:dreame-vacuum-card-hd`.
+- README: what to do if a dashboard still shows the integration's "DVC key" card.
+
 ## [1.0.5] — New card type: `custom:dreame-vacuum-card-hd`
 
 ### Fixed

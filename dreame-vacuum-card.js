@@ -1,5 +1,5 @@
 /**
- * Dreame Vacuum Card
+ * Dreame Vacuum Card HD
  * A custom Dashboard card for Home Assistant — built around the official
  * dreame_vacuum integration. Designed for the Dreame X40 Ultra but works
  * with any Dreame robot vacuum that the integration supports.
@@ -7,7 +7,7 @@
  * Repository : https://github.com/hedegaard1/dreame-vacuum-card
  * Author     : Martin Fiil
  * License    : MIT
- * Version    : 1.0.5
+ * Version    : 1.0.6
  *
  * Configuration example (dashboard YAML):
  *
@@ -4288,7 +4288,7 @@ else window.addEventListener("load", dvcHdRegisterLegacyTag, { once: true });
 window.customCards = window.customCards || [];
 window.customCards.push({
   type: DVC_HD_TAG,
-  name: "Dreame Vacuum Card",
+  name: "Dreame Vacuum Card HD",
   description: "Responsive Dashboard card for the Dreame Vacuum Home Assistant integration — works on desktop and mobile.",
   preview: true,
   documentationURL: "https://github.com/hedegaard1/dreame-vacuum-card",

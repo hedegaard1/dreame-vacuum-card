@@ -1,4 +1,4 @@
-# Dreame Vacuum Card
+# Dreame Vacuum Card HD
 
 A polished Dashboard card for the [dreame_vacuum](https://github.com/Tasshack/dreame-vacuum) Home Assistant integration — fully responsive, looks great on both desktop dashboards and mobile views. Designed for the Dreame X40 Ultra but works with any Dreame robot vacuum the integration supports.
 
@@ -155,7 +155,7 @@ The card never throws "entity not found" errors. Instead, every section is rende
 3. Add this repository:
    - **Repository:** `https://github.com/hedegaard1/dreame-vacuum-card`
    - **Type:** `Dashboard`
-4. Find **Dreame Vacuum Card** in HACS, click *Download*, and select the latest version.
+4. Find **Dreame Vacuum Card HD** in HACS, click *Download*, and select the latest version.
 5. Refresh your browser (hard refresh: Ctrl+F5 or Cmd+Shift+R) so HA picks up the new resource.
 
 ### Manual install
@@ -173,6 +173,7 @@ The card never throws "entity not found" errors. Instead, every section is rende
 
 > **Card type changed in v1.0.5:** use `type: custom:dreame-vacuum-card-hd`.
 > The dreame_vacuum integration (v2.0 and later) ships its own built-in card under the name `custom:dreame-vacuum-card`. When both are loaded, that name shows the integration's card (with its "Get DVC key" preview) instead of this one. The old name still works for this card when nothing else uses it, but switch your dashboards to the new name.
+> **Still seeing a map card that asks for a "DVC key"?** Then the dashboard still says `type: custom:dreame-vacuum-card`. Edit the card in YAML, change the type to `custom:dreame-vacuum-card-hd`, save, and hard-refresh (Ctrl+F5, or clear the frontend cache in the companion app).
 
 ### Minimal
 
