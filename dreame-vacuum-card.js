@@ -7,11 +7,11 @@
  * Repository : https://github.com/hedegaard1/dreame-vacuum-card
  * Author     : Martin Fiil
  * License    : MIT
- * Version    : 1.0.4
+ * Version    : 1.0.5
  *
  * Configuration example (dashboard YAML):
  *
- *   type: custom:dreame-vacuum-card
+ *   type: custom:dreame-vacuum-card-hd
  *   entity: vacuum.dreame_x40_ultra      # required — your Dreame vacuum
  *   title: Dreame X40 Ultra              # optional — header title (defaults to friendly_name)
  *   image: /local/my-robot.png           # optional — path to a robot image
@@ -4258,11 +4258,36 @@ class DreameVacuumCard extends HTMLElement {
   }
 }
 
-customElements.define("dreame-vacuum-card", DreameVacuumCard);
+// The card's own tag. "dreame-vacuum-card" is also used by the card that ships
+// built into the dreame_vacuum integration (v2.0+), so this card registers a
+// tag of its own. Guarded so a second copy of this file can't throw.
+const DVC_HD_TAG = "dreame-vacuum-card-hd";
+const DVC_HD_LEGACY_TAG = "dreame-vacuum-card";
+
+if (!customElements.get(DVC_HD_TAG)) {
+  customElements.define(DVC_HD_TAG, DreameVacuumCard);
+}
+
+// Keep old dashboards (type: custom:dreame-vacuum-card) working when nothing
+// else uses that tag. Wait until the page has loaded and the integration has
+// had time to register its own card, so this card never takes the tag from it.
+// A tag can only map to one class, hence the empty subclass.
+const dvcHdRegisterLegacyTag = () => {
+  setTimeout(() => {
+    if (customElements.get(DVC_HD_LEGACY_TAG)) return;
+    customElements.define(DVC_HD_LEGACY_TAG, class extends DreameVacuumCard {});
+    console.info(
+      `dreame-vacuum-card-hd: also registered as "${DVC_HD_LEGACY_TAG}". ` +
+      `Change the dashboard to "type: custom:${DVC_HD_TAG}".`
+    );
+  }, 5000);
+};
+if (document.readyState === "complete") dvcHdRegisterLegacyTag();
+else window.addEventListener("load", dvcHdRegisterLegacyTag, { once: true });
 
 window.customCards = window.customCards || [];
 window.customCards.push({
-  type: "dreame-vacuum-card",
+  type: DVC_HD_TAG,
   name: "Dreame Vacuum Card",
   description: "Responsive Dashboard card for the Dreame Vacuum Home Assistant integration — works on desktop and mobile.",
   preview: true,

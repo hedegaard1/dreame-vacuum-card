@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.5] — New card type: `custom:dreame-vacuum-card-hd`
+
+### Fixed
+- The card could be replaced by a different card. The dreame_vacuum integration (v2.0 and later) ships its own built-in card under the same name, `custom:dreame-vacuum-card`, and registers it automatically. Whichever loaded first won. When it was the integration's card, dashboards showed its "Get DVC key" preview, and this card failed to load with "already defined".
+
+### Changed
+- The card now registers as **`dreame-vacuum-card-hd`**. Change your dashboard YAML to `type: custom:dreame-vacuum-card-hd`.
+- The old name `dreame-vacuum-card` is still registered for this card, but only when nothing else has taken it a few seconds after the page loads. That way old dashboards keep working, and the integration's own card is never pushed aside.
+
 ## [1.0.4] — Start cleaning while the mop is drying
 
 ### Fixed

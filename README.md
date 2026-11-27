@@ -171,17 +171,20 @@ The card never throws "entity not found" errors. Instead, every section is rende
 
 ## Configuration
 
+> **Card type changed in v1.0.5:** use `type: custom:dreame-vacuum-card-hd`.
+> The dreame_vacuum integration (v2.0 and later) ships its own built-in card under the name `custom:dreame-vacuum-card`. When both are loaded, that name shows the integration's card (with its "Get DVC key" preview) instead of this one. The old name still works for this card when nothing else uses it, but switch your dashboards to the new name.
+
 ### Minimal
 
 ```yaml
-type: custom:dreame-vacuum-card
+type: custom:dreame-vacuum-card-hd
 entity: vacuum.dreame_x40_ultra
 ```
 
 ### All options
 
 ```yaml
-type: custom:dreame-vacuum-card
+type: custom:dreame-vacuum-card-hd
 entity: vacuum.dreame_x40_ultra        # required — your Dreame vacuum entity
 title: Dreame X40 Ultra                # optional — header title (defaults to friendly_name)
 image: /local/DreameX40Ultra.png       # optional — path to a robot image (falls back to mdi:robot-vacuum icon)
@@ -200,7 +203,7 @@ A bundled top-down image of a Dreame robot vacuum is included at [`images/dreame
 3. Reference it in your card config:
 
 ```yaml
-type: custom:dreame-vacuum-card
+type: custom:dreame-vacuum-card-hd
 entity: vacuum.dreame_x40_ultra
 image: /local/dreame-vacuum.png
 ```

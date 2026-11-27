@@ -19,14 +19,14 @@ A polished, fully responsive Dashboard card for the [dreame_vacuum](https://gith
 ## Minimal configuration
 
 ```yaml
-type: custom:dreame-vacuum-card
+type: custom:dreame-vacuum-card-hd
 entity: vacuum.dreame_x40_ultra
 ```
 
 ## Optional
 
 ```yaml
-type: custom:dreame-vacuum-card
+type: custom:dreame-vacuum-card-hd
 entity: vacuum.dreame_x40_ultra
 title: Dreame X40 Ultra
 image: /local/DreameX40Ultra.png
