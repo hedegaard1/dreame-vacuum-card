@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.4] — Start cleaning while the mop is drying
+
+### Fixed
+- **Clean selected room/s** and **Clean all rooms** did nothing while the mop was drying after a job. The "Mop drying x%" line counted as a warning, so the start asked for confirmation with `window.confirm()`. The Home Assistant companion app and some tablets never show that pop-up and answer "no", so no service call was sent. Mop drying is now information only: it still shows in the alert banner but no longer blocks a start. The robot stops drying by itself when a job starts.
+
+### Changed
+- The confirmation for real warnings (empty water tank, full dust bag, …) is now shown inside the card, with the warnings listed and **Start anyway** / **Cancel** buttons, instead of a browser `confirm()` pop-up. It works the same in browsers, the companion app and on kiosk tablets.
+
 ## [1.0.3] — Replace remaining "Lovelace" wording with "Dashboard"
 
 ### Changed

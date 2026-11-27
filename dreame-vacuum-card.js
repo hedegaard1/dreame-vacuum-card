@@ -7,7 +7,7 @@
  * Repository : https://github.com/hedegaard1/dreame-vacuum-card
  * Author     : Martin Fiil
  * License    : MIT
- * Version    : 1.0.3
+ * Version    : 1.0.4
  *
  * Configuration example (dashboard YAML):
  *
@@ -454,8 +454,10 @@ const TRANSLATIONS = {
     sub_wetness: "WETNESS LEVEL",
     sub_wetness_disabled: "WETNESS — entity not enabled",
     // Confirmations / alerts
-    confirm_warnings_one: "The robot has the following warning:\n\n{messages}\n\nStart cleaning anyway?",
-    confirm_warnings_many: "The robot has the following warnings:\n\n{messages}\n\nStart cleaning anyway?",
+    confirm_start_title_one: "The robot has a warning. Start cleaning anyway?",
+    confirm_start_title_many: "The robot has warnings. Start cleaning anyway?",
+    btn_start_anyway: "Start anyway",
+    btn_cancel: "Cancel",
     alert_select_room_first: "Select at least one room first.",
     alert_missing_select: "Could not find \"{label}\" as a select entity.\n\nEnable it in Home Assistant:\nSettings → Devices & Services → Dreame Vacuum → click your robot → \"+x disabled entities\" → find and enable \"{label}\".",
     alert_missing_entity: "Could not find \"{label}\".\n\nEnable it under Dreame Vacuum → click the robot → \"+x disabled entities\".",
@@ -553,8 +555,10 @@ const TRANSLATIONS = {
     sub_suction: "SUGEEFFEKT",
     sub_wetness: "FUGTNIVEAU",
     sub_wetness_disabled: "FUGT — entitet ikke aktiveret",
-    confirm_warnings_one: "Robotten har følgende advarsel:\n\n{messages}\n\nVil du starte rengøring alligevel?",
-    confirm_warnings_many: "Robotten har følgende advarsler:\n\n{messages}\n\nVil du starte rengøring alligevel?",
+    confirm_start_title_one: "Robotten har en advarsel. Vil du starte rengøring alligevel?",
+    confirm_start_title_many: "Robotten har advarsler. Vil du starte rengøring alligevel?",
+    btn_start_anyway: "Start alligevel",
+    btn_cancel: "Annullér",
     alert_select_room_first: "Vælg mindst ét rum først.",
     alert_missing_select: "Kunne ikke finde \"{label}\" som select-entitet.\n\nAktiver den i Home Assistant:\nIndstillinger → Enheder og tjenester → Dreame Vacuum → klik på din robot → \"+x deaktiverede enheder\" → find og aktivér \"{label}\".",
     alert_missing_entity: "Kunne ikke finde \"{label}\".\n\nAktiver den under Dreame Vacuum → klik på robotten → \"+x deaktiverede enheder\".",
@@ -1555,25 +1559,47 @@ class DreameVacuumCard extends HTMLElement {
     this.render();
   }
 
-  // Show the user any active warnings before starting a clean. Returns true if user
-  // confirmed to proceed (or there were no warnings), false if they cancelled.
-  _confirmStartIfWarnings() {
-    const warnings = this.getWarnings();
-    if (!warnings.length) return true;
-    const messages = warnings.map(w => `• ${w.label}`).join("\n");
-    return confirm(
-      this._t(warnings.length > 1 ? "confirm_warnings_many" : "confirm_warnings_one", { messages })
-    );
+  // Warnings that should make the user confirm before a clean starts.
+  _startWarnings() {
+    // Mop drying progress is information only: it must not block a new clean
+    // (the robot stops drying by itself when a job starts).
+    return this.getWarnings().filter(w => w.icon !== ALERT_ICONS.drying);
+  }
+
+  // Ask for confirmation inside the card when there are active warnings.
+  // window.confirm() is not shown in the Home Assistant companion app and on
+  // some tablets/kiosk browsers; it then returns false and the start is
+  // silently dropped. Returns true when the start may go ahead now, false
+  // when the card is showing the confirm panel instead.
+  _confirmStartIfWarnings(kind) {
+    if (!this._startWarnings().length) return true;
+    this._pendingStart = kind;
+    this.render();
+    return false;
+  }
+
+  _confirmPendingStart() {
+    const kind = this._pendingStart;
+    this._pendingStart = null;
+    if (kind === "selected") this.cleanSelected(true);
+    else if (kind === "all") this.cleanAll(true);
+    // The start methods don't re-render; do it so the panel goes away now.
+    this.render();
+  }
+
+  _cancelPendingStart() {
+    this._pendingStart = null;
+    this.render();
   }
 
   // ----- vacuum actions -----
-  cleanSelected() {
+  cleanSelected(confirmed = false) {
     const segments = Array.from(this.selectedRooms);
     if (!segments.length) {
       alert(this._t("alert_select_room_first"));
       return;
     }
-    if (!this._confirmStartIfWarnings()) return;
+    if (!confirmed && !this._confirmStartIfWarnings("selected")) return;
     const data = { entity_id: this.config.entity, segments };
     // Pass the global cleaning_times as `repeats` (only when not 1, since 1 is default)
     if (this._globalCleaningTimes && this._globalCleaningTimes > 1) {
@@ -1585,8 +1611,8 @@ class DreameVacuumCard extends HTMLElement {
     this._setActiveJob("selected");
   }
 
-  cleanAll() {
-    if (!this._confirmStartIfWarnings()) return;
+  cleanAll(confirmed = false) {
+    if (!confirmed && !this._confirmStartIfWarnings("all")) return;
     // If the user picked 2x/3x, route through vacuum_clean_segment with all
     // rooms so the `repeats` parameter is honoured. Otherwise use plain
     // vacuum.start which is simpler and triggers Dreame's default flow.
@@ -2445,6 +2471,10 @@ class DreameVacuumCard extends HTMLElement {
     const isCharging = stateStr === "docked" && battery < 100;
     const warnings = this.getWarnings();
     const activeJob = isActive ? this._getActiveJob() : null;
+    // In-card start confirmation. Drop it if a job started meanwhile or the
+    // warnings it asked about have cleared.
+    const startWarnings = this._pendingStart && !isActive ? this._startWarnings() : [];
+    if (this._pendingStart && !startWarnings.length) this._pendingStart = null;
 
     this.innerHTML = `
       <ha-card>
@@ -3026,6 +3056,40 @@ class DreameVacuumCard extends HTMLElement {
           .btn-row.three { grid-template-columns: 1fr 1fr 1fr; }
           .btn-row.two { grid-template-columns: 1fr 1fr; }
           .btn-row.main { grid-template-columns: 2fr 1fr 1fr; }
+
+          /* In-card start confirmation (replaces window.confirm, which the
+             HA companion app and some tablets never show) */
+          .start-confirm {
+            background: var(--dvc-tile);
+            border-radius: 14px;
+            padding: 10px 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+          }
+          .start-confirm-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--dvc-text);
+          }
+          .start-confirm-title ha-icon { --mdc-icon-size: 20px; color: #DC2626; flex-shrink: 0; }
+          .start-confirm-list {
+            list-style: none;
+            margin: 8px 0 10px;
+            padding: 0;
+            display: grid;
+            gap: 4px;
+          }
+          .start-confirm-list li {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--dvc-text-secondary);
+            min-width: 0;
+          }
+          .start-confirm-list ha-icon { --mdc-icon-size: 16px; flex-shrink: 0; }
 
           button {
             width: 100%;
@@ -3869,6 +3933,27 @@ class DreameVacuumCard extends HTMLElement {
             <!-- MAIN ACTIONS — Clean Selected is primary when rooms picked,
                  Clean All is primary when none. The non-primary one falls back
                  to the default button style and disabled fade. -->
+            ${this._pendingStart ? `
+            <div class="start-confirm" role="alertdialog" aria-labelledby="startConfirmTitle">
+              <div class="start-confirm-title" id="startConfirmTitle">
+                <ha-icon icon="mdi:alert"></ha-icon>
+                <span>${this._t(startWarnings.length > 1 ? "confirm_start_title_many" : "confirm_start_title_one")}</span>
+              </div>
+              <ul class="start-confirm-list">
+                ${startWarnings.map(w => `<li><ha-icon icon="${w.icon}"></ha-icon><span>${w.label}</span></li>`).join("")}
+              </ul>
+              <div class="btn-row two" style="margin-bottom:0;">
+                <button class="primary" id="confirmStart" type="button">
+                  <ha-icon icon="mdi:play"></ha-icon>
+                  <span>${this._t("btn_start_anyway")}</span>
+                </button>
+                <button id="cancelStart" type="button">
+                  <ha-icon icon="mdi:close"></ha-icon>
+                  <span>${this._t("btn_cancel")}</span>
+                </button>
+              </div>
+            </div>
+            ` : `
             <div class="btn-row main" style="margin-bottom:0;">
               <button class="${selectedCount > 0 ? "primary" : ""}" id="cleanSelected" type="button" ${selectedCount === 0 ? "disabled" : ""}>
                 <ha-icon icon="mdi:play"></ha-icon>
@@ -3883,6 +3968,7 @@ class DreameVacuumCard extends HTMLElement {
                 <span>${this._t("btn_clear")}</span>
               </button>
             </div>
+            `}
 
             ${isActive ? this.renderCleaningOverlay(attr, entity, battery, status, rooms, activeJob) : ""}
           </div>
@@ -3932,6 +4018,8 @@ class DreameVacuumCard extends HTMLElement {
     this.querySelector("#clear")?.addEventListener("click", () => this.clearSelection());
     this.querySelector("#cleanSelected")?.addEventListener("click", () => this.cleanSelected());
     this.querySelector("#cleanAll")?.addEventListener("click", () => this.cleanAll());
+    this.querySelector("#confirmStart")?.addEventListener("click", () => this._confirmPendingStart());
+    this.querySelector("#cancelStart")?.addEventListener("click", () => this._cancelPendingStart());
 
     // Cleaning overlay actions
     this.querySelector("#overlayPauseResume")?.addEventListener("click", () => this.pauseOrResume());

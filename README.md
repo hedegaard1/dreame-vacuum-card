@@ -52,6 +52,10 @@ Whenever the integration reports an issue (cleanup route blocked, low water, dir
 
 ![Alert banner — Cleanup route blocked](https://raw.githubusercontent.com/hedegaard1/dreame-vacuum-card/main/images/alert-banner.png)
 
+Mop drying progress ("Mop drying 42%") is shown in the same banner, but it is information only: it never stops a new clean, and the robot ends the drying by itself when a job starts.
+
+If you press **Clean selected room/s** or **Clean all rooms** while a real warning is active (e.g. an empty clean-water tank), the card asks inside the card itself, listing the warnings with **Start anyway** and **Cancel** buttons. It does not use a browser pop-up, so the question also appears in the Home Assistant companion app and on wall tablets.
+
 The status pill on the right of the hero also flips to "Error" with a sub-label describing what the robot is currently doing about it (e.g. "Returning to dock"), so you get the cause + the consequence in one glance.
 
 
